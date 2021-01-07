@@ -16,7 +16,6 @@ function compile(options) {
         cwd,
         mode,
         tryCatch,
-        // IDE 中使用类似 serve 的处理, 以便 manifest.json 能动态应用编译模式
         isServe: watch,
       })
       function compileCallback(error, stats) {
