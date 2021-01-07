@@ -1,0 +1,10 @@
+{
+  "pages": [],
+  "subpackages": [
+    {
+      "root": "pkg1",
+      "name": "pkg1",
+      "pages": ["p1/p1"]
+    }
+  ]
+}
