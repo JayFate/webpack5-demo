@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const CopyPlugin = require('copy-webpack-plugin')
 const DependencyGraphPlugin = require("../plugins/my-plugin");
 
 module.exports = async function genWebpackConfig(options) {
@@ -9,9 +10,13 @@ module.exports = async function genWebpackConfig(options) {
   const BUILD_DIR = path.resolve(cwd, ".quickapp/build");
   const mode = "development";
   const dependencyGraphPlugin = new DependencyGraphPlugin(root);
+  const fileExtList = [
+    'png'
+  ].join('|')
   let config = {
     context: root,
     mode,
+    cache: false,
     entry: {
       "app.js":
         path.resolve(root, 'app.json?main'),
@@ -31,6 +36,17 @@ module.exports = async function genWebpackConfig(options) {
       ],
     },
     plugins: [
+      new CopyPlugin({
+        patterns: [
+          {
+            from: `**/*.@(${fileExtList})`,
+            to: BUILD_DIR,
+            context: root,
+            globOptions: {
+            }
+          }
+        ]
+      }),
       new webpack.LoaderOptionsPlugin({
         projectRoot: cwd,
         appRoot: root,
@@ -39,6 +55,5 @@ module.exports = async function genWebpackConfig(options) {
     ],
     watch: true,
   };
-
   return config;
 };
